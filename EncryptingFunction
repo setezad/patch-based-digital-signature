@@ -1,0 +1,60 @@
+
+function [gim,out] = ImageLockCoding(lockcode,prms)
+ 
+w = prms.w;
+h = prms.h;
+b = prms.b;
+z = prms.z;
+dx = prms.dx;   % deltax 
+dy = prms.dy;   % deltay
+codex = prms.codex;
+ 
+% Producing the coding image
+gim = uint8(round(rand(b,z,3)*255));
+ 
+ndx = length(dx);
+ndy = length(dy);
+l = length(lockcode);
+ 
+%choose x0 & y0 randomly
+fx0 = floor(rand(1)*(b-w));
+fy0 = floor(rand(1)*(b-h));
+ 
+x0 = fx0;
+y0 = fy0;
+ 
+for k = 1:length(lockcode)
+    
+    while(true)
+        %choose deltax & deltay randomly
+        nx = floor(rand*ndx+1);
+        ny = floor(rand*ndy+1);
+        
+        % x0 & y0 for the next code
+        nx0 = x0 + dx(nx);
+        ny0 = y0 + dy(ny);
+    
+        %set limitation for x0 & y0
+        if( 1<=nx0 && nx0<=b-w && 1<=ny0 && ny0<=b-w )
+            break;
+        end
+    end
+    
+    % choose the specific code 
+    d = str2double(lockcode(k));
+    ptrn = codex{ d, sub2ind([ndy ndx],ny,nx) };
+    
+    % x & y for replacing the codex in the image
+    x0new = x0 + k*b + 1;
+    y0new = y0 + 1;
+    
+    %replacing the codex in image
+    gim( y0new:y0new+w-1, x0new:x0new+h-1, : ) = ptrn;
+    
+    % x0 & y0 for the next code
+    x0 = nx0;
+    y0 = ny0;
+end
+out = [b,fx0,fy0,l];
+
+  
