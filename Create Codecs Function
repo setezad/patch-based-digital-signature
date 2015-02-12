@@ -1,0 +1,32 @@
+function codecs = CreateNormalCodecs(ndx,ndy,w,h)
+
+TR = 255*13;
+
+%codes for different deltax and deltay
+codecs = cell(9,ndx*ndy);
+for j=1:25
+    for i = 1:9
+        while(true)
+            disp([i j])
+            
+            codecs{i,j} = uint8(round(rand(h,w,3)*255));
+            
+            % Check that there is a good difference between new block and all
+            % of the previous blocks
+            mnerr = Inf;
+            indx = sub2ind([9 25], i,j);
+            for k = 1:indx-1
+                err = sum(sum(sum(abs(double(codecs{i,j})-double(codecs{k})))));
+                if( err<mnerr )
+                    mnerr = err;
+                end
+            end
+            if(TR<mnerr)
+                break;
+            else
+                disp('repeated ...')
+            end
+            
+        end
+    end
+end
