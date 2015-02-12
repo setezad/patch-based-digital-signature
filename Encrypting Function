@@ -7,7 +7,7 @@ b = prms.b;
 z = prms.z;
 dx = prms.dx;   % deltax 
 dy = prms.dy;   % deltay
-codex = prms.codex;
+codecs = prms.codecs;
  
 % Producing the coding image
 gim = uint8(round(rand(b,z,3)*255));
@@ -42,13 +42,13 @@ for k = 1:length(lockcode)
     
     % choose the specific code 
     d = str2double(lockcode(k));
-    ptrn = codex{ d, sub2ind([ndy ndx],ny,nx) };
+    ptrn = codecs{ d, sub2ind([ndy ndx],ny,nx) };
     
-    % x & y for replacing the codex in the image
+    % x & y for replacing the codecs in the image
     x0new = x0 + k*b + 1;
     y0new = y0 + 1;
     
-    %replacing the codex in image
+    %replacing the codecs in image
     gim( y0new:y0new+w-1, x0new:x0new+h-1, : ) = ptrn;
     
     % x0 & y0 for the next code
