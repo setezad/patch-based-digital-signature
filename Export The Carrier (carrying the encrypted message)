@@ -1,0 +1,11 @@
+function [codeimg,fx0,fy0,l] = ExportCodeImage(cods,prms)
+
+[codeimg,out] = ImageLockCoding(cods,prms);
+
+fx0 = out(2);
+fy0 = out(3);
+l = out(4);
+
+
+
+codeimg = reshape(codeimg, [prms.b*prms.s,prms.z/prms.s,3]);
