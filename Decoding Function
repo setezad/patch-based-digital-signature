@@ -1,0 +1,51 @@
+function [lock,mnerrs] = ImageLockDecoding(rgim,codecs,fx0,fy0,l,b,w,h,dx,dy)
+% load codecs 
+
+%deltax & deltay
+ndx = length(dx);
+ndy = length(dy);
+
+%reshape the coded image
+cgim = reshape(rgim,[b numel(rgim)/b/3 3]);
+
+%Decoding the image
+x0 = fx0;
+y0 = fy0;
+lock = zeros(1,l);
+mnerrs = zeros(1,l);
+
+for k=1:l
+    x0new = x0+k*b+1;
+    y0new = y0+1;
+    ptrn = cgim(y0new:y0new+h-1, x0new:x0new+w-1, : );
+    mnerr = Inf;
+    for i=1:9
+        for j=1:25
+            err = sum(sum(sum(abs(double(ptrn)-double(codecs{i,j})))));
+            if  err<mnerr
+                mnerr = err;
+                bsti = i;
+                bstj = j;
+            end
+        end
+    end
+    if isinf(mnerr)
+        error('Invalid codecs!')
+    else
+        lock(k) = bsti;
+        [ny,nx]=ind2sub([ndy,ndx],bstj);
+    end
+    mnerrs(k) = mnerr;
+    %disp(mnerr)
+    
+    nx0 = x0+dx(nx);
+    ny0 = y0+dy(ny);
+    
+    % x0 & y0 for the next code
+    x0 = nx0;
+    y0 = ny0;
+end
+
+
+
+
