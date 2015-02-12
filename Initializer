@@ -1,0 +1,12 @@
+function prms = ImageLockInit
+
+prms = struct('w',4, 'h',4, 'b',12, 'z',120, 's',4, 'dx',[-2 -1 0 1 2], 'dy',[-2 -1 0 1 2], 'codecs',[]);
+
+%
+if( exist('codecs.mat','file') )
+    load codecs
+else
+    codecs = CreateNormalCodecs(length(prms.dx),length(prms.dy),prms.w,prms.h);
+    save codecs codecs
+end
+prms.codecs = codecs;
