@@ -1,0 +1,4 @@
+function [cds,mnerrs] = ImportCodeImage(codeimg,prms,fx0,fy0,l)
+
+
+[cds,mnerrs] = ImageLockDecoding(codeimg,prms.codecs,fx0,fy0,l,prms.b,prms.w,prms.h,prms.dx,prms.dy);
