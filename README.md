@@ -12,7 +12,7 @@ We are assuming the message is a string of numbers. x and y represent the x -axi
 
 To hide the message from users, we use steganography methods, meaning we hide the message in an image. The image did not need to be meaningful so we created a noisy RGB image. 
 
-Consider Hash tables in the sense that we represent a meaningful data by something random and meaningless. We aimed for something similar. So we created random n*n*3 matrixes to represent digits 1-9. Here we allocated 25 different matrixes for each digit, and each matrix was called a “patch” and a set of them was called “codex”. So each time we randomly chose a patch among 9*25 of them. These patches were shared between the sender and the receiver.  
+Consider Hash tables in the sense that we represent a meaningful data by something random and meaningless. We aimed for something similar. So we created random n*n*3 matrixes to represent digits 1-9. Here we allocated 25 different matrixes for each digit, and each matrix was called a “patch” and a set of them was called “codex/codecs”. So each time we randomly chose a patch among 9*25 of them. These patches were shared between the sender and the receiver.  
 
 We also defined 2 set of numbers (arrays), one for delta x and one for delta y. There were 5 members in each array. It was also essential for these arrays to be shared along with the codex. 
 
