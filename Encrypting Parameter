@@ -1,0 +1,70 @@
+function img = CodeParameters(img,A,codecs)
+% A = [b,fx0,fy0,prms.w,prms.h,l,prms.dx,prms.dy];
+% load codecs
+
+w = A(4);
+h = A(5);
+count = 0;
+% code b,fx0,fy0,l,prms.w,prms.h
+for i=1:6
+    % obtain parameters needed for choosing the code a = 1:9, r = 1:25
+    if i ~= 6
+        a = ceil(A(i)/25);
+    else
+        a = ceil((A(i)+1)/25);
+    end
+    %
+    if a == 0
+        a = a+1;
+    end
+    % remaining
+    r = mod(A(i),25);
+    if r == 0
+        r = 25;
+    end
+    % choose the code from codecs
+    ptrn = codecs{a,r};
+    % replace the image with the code
+    if i == 1
+        temp = reshape(ptrn, [w*h 1 3]);
+        img(1:w*h,1,1:3) = temp;
+    else
+        img(1:4 ,4*(i-1):4*i-1, :) = ptrn;
+    end
+end
+% code prms.dx & prms.dy
+j = 2;
+ptrn = zeros(4,4,3);
+% where to start to change the image
+strt = 5;
+% where to stop changing the image
+stp = 8;
+count = i;
+for i= count+1:count+10
+    % i=7:11 dx & i=12:16 dy
+    if i == (count + 6)
+        strt = 9;
+        stp = 12;
+        j = 2;
+    end 
+    % make positive numbers
+    A(i) = A(i)+30;
+    a = ceil(A(i)/25);
+    %
+    if a == 0
+        a = a+1;
+    end
+    % remaining
+    r = mod(A(i),25);
+    if r == 0
+        r = 25;
+    end
+    % choose the code from codecs
+    ptrn = codecs{a,r};
+   
+    % replace the image with the code
+    img(strt:stp ,4*(j-1):4*j-1, :) = ptrn;
+    j = j+1;
+
+   
+end
